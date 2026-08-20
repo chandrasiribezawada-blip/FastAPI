@@ -20,9 +20,9 @@ def create_registration(db: Session, registration: RegistrationCreate):
 
     db_registration = models.Registration(
         student_id=registration.student_id,
-        subject_id=registration.subject_id,
+        offering_id=registration.offering_id,
         registration_date=registration.registration_date,
-        status=registration.status,
+        registration_status=registration.status,
     )
 
     db.add(db_registration)
@@ -44,9 +44,9 @@ def update_registration(
         return None
 
     db_registration.student_id = registration.student_id
-    db_registration.subject_id = registration.subject_id
+    db_registration.offering_id = registration.offering_id
     db_registration.registration_date = registration.registration_date
-    db_registration.status = registration.status
+    db_registration.registration_status = registration.status
 
     db.commit()
     db.refresh(db_registration)

@@ -12,7 +12,11 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=list[schemas.ExaminationResultResponse])
+@router.get(
+    "/",
+    response_model=list[schemas.ExaminationResultResponse],
+    summary="List all examination results"
+)
 def get_examination_results(db: Session = Depends(get_db)):
 
     return examination_result_service.get_examination_results(db)
@@ -20,7 +24,8 @@ def get_examination_results(db: Session = Depends(get_db)):
 
 @router.get(
     "/{result_id}",
-    response_model=schemas.ExaminationResultResponse
+    response_model=schemas.ExaminationResultResponse,
+    summary="Get an examination result by ID"
 )
 def get_examination_result(
     result_id: int,
@@ -41,7 +46,8 @@ def get_examination_result(
 @router.post(
     "/",
     response_model=schemas.ExaminationResultResponse,
-    status_code=201
+    status_code=201,
+    summary="Create an examination result"
 )
 def create_examination_result(
     result: schemas.ExaminationResultCreate,
@@ -53,7 +59,8 @@ def create_examination_result(
 
 @router.put(
     "/{result_id}",
-    response_model=schemas.ExaminationResultResponse
+    response_model=schemas.ExaminationResultResponse,
+    summary="Update an examination result by ID"
 )
 def update_examination_result(
     result_id: int,
@@ -76,7 +83,10 @@ def update_examination_result(
     return updated_result
 
 
-@router.delete("/{result_id}")
+@router.delete(
+    "/{result_id}",
+    summary="Delete an examination result by ID"
+)
 def delete_examination_result(
     result_id: int,
     db: Session = Depends(get_db)

@@ -12,7 +12,11 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=list[schemas.StudentResponse])
+@router.get(
+    "/",
+    response_model=list[schemas.StudentResponse],
+    summary="List all students"
+)
 def get_students(db: Session = Depends(get_db)):
 
     return student_service.get_students(db)
@@ -20,7 +24,8 @@ def get_students(db: Session = Depends(get_db)):
 
 @router.get(
     "/{student_id}",
-    response_model=schemas.StudentResponse
+    response_model=schemas.StudentResponse,
+    summary="Get a student by ID"
 )
 def get_student(
     student_id: int,
@@ -44,7 +49,8 @@ def get_student(
 @router.post(
     "/",
     response_model=schemas.StudentResponse,
-    status_code=201
+    status_code=201,
+    summary="Create a student"
 )
 def create_student(
     student: schemas.StudentCreate,
@@ -59,7 +65,8 @@ def create_student(
 
 @router.put(
     "/{student_id}",
-    response_model=schemas.StudentResponse
+    response_model=schemas.StudentResponse,
+    summary="Update a student by ID"
 )
 def update_student(
     student_id: int,
@@ -82,7 +89,10 @@ def update_student(
     return updated_student
 
 
-@router.delete("/{student_id}")
+@router.delete(
+    "/{student_id}",
+    summary="Delete a student by ID"
+)
 def delete_student(
     student_id: int,
     db: Session = Depends(get_db)

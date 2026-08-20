@@ -20,9 +20,10 @@ def create_course_offering(db: Session, offering: CourseOfferingCreate):
 
     db_offering = models.CourseOffering(
         subject_id=offering.subject_id,
-        faculty_id=offering.faculty_id,
         semester=offering.semester,
         academic_year=offering.academic_year,
+        section=offering.section,
+        status=offering.status,
     )
 
     db.add(db_offering)
@@ -44,9 +45,10 @@ def update_course_offering(
         return None
 
     db_offering.subject_id = offering.subject_id
-    db_offering.faculty_id = offering.faculty_id
     db_offering.semester = offering.semester
     db_offering.academic_year = offering.academic_year
+    db_offering.section = offering.section
+    db_offering.status = offering.status
 
     db.commit()
     db.refresh(db_offering)

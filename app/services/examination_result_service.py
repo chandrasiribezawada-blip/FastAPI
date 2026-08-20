@@ -20,9 +20,12 @@ def create_examination_result(db: Session, result: ExaminationResultCreate):
 
     db_result = models.ExaminationResult(
         student_id=result.student_id,
-        subject_id=result.subject_id,
-        marks=result.marks,
+        offering_id=result.offering_id,
+        internal_marks=result.internal_marks,
+        external_marks=result.external_marks,
+        total_marks=result.total_marks,
         grade=result.grade,
+        result_status=result.result_status,
     )
 
     db.add(db_result)
@@ -44,9 +47,12 @@ def update_examination_result(
         return None
 
     db_result.student_id = result.student_id
-    db_result.subject_id = result.subject_id
-    db_result.marks = result.marks
+    db_result.offering_id = result.offering_id
+    db_result.internal_marks = result.internal_marks
+    db_result.external_marks = result.external_marks
+    db_result.total_marks = result.total_marks
     db_result.grade = result.grade
+    db_result.result_status = result.result_status
 
     db.commit()
     db.refresh(db_result)

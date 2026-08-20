@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import IntegrityError
 
 from app.routers import students
 from app.routers import faculty
@@ -18,6 +20,17 @@ app = FastAPI(
     description="Backend API for Student Management System",
     version="1.0.0"
 )
+
+
+@app.exception_handler(IntegrityError)
+async def handle_integrity_error(request: Request, exc: IntegrityError):
+    return JSONResponse(
+        status_code=400,
+        content={
+            "detail": "The request conflicts with existing database data. "
+            "Check referenced IDs and unique fields."
+        },
+    )
 
 app.include_router(examination_results.router)
 app.include_router(faculty_assignments.router)

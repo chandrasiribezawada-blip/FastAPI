@@ -18,8 +18,12 @@ def get_faculty_member(db: Session, faculty_id: int):
 
 def create_faculty_member(db: Session, faculty: FacultyCreate):
 
+    name_parts = faculty.faculty_name.split(maxsplit=1)
+
     db_faculty = models.Faculty(
-        faculty_name=faculty.faculty_name,
+        employee_id=faculty.employee_id,
+        first_name=name_parts[0],
+        last_name=name_parts[1] if len(name_parts) > 1 else None,
         email=faculty.email,
         mobile=faculty.mobile,
         department_id=faculty.department_id,
@@ -43,7 +47,10 @@ def update_faculty_member(
     if db_faculty is None:
         return None
 
-    db_faculty.faculty_name = faculty.faculty_name
+    name_parts = faculty.faculty_name.split(maxsplit=1)
+    db_faculty.employee_id = faculty.employee_id
+    db_faculty.first_name = name_parts[0]
+    db_faculty.last_name = name_parts[1] if len(name_parts) > 1 else None
     db_faculty.email = faculty.email
     db_faculty.mobile = faculty.mobile
     db_faculty.department_id = faculty.department_id

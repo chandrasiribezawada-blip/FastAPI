@@ -20,9 +20,8 @@ def create_faculty_assignment(db: Session, assignment: FacultyAssignmentCreate):
 
     db_assignment = models.FacultyAssignment(
         faculty_id=assignment.faculty_id,
-        subject_id=assignment.subject_id,
-        semester=assignment.semester,
-        academic_year=assignment.academic_year,
+        offering_id=assignment.offering_id,
+        role=assignment.role,
     )
 
     db.add(db_assignment)
@@ -44,9 +43,8 @@ def update_faculty_assignment(
         return None
 
     db_assignment.faculty_id = assignment.faculty_id
-    db_assignment.subject_id = assignment.subject_id
-    db_assignment.semester = assignment.semester
-    db_assignment.academic_year = assignment.academic_year
+    db_assignment.offering_id = assignment.offering_id
+    db_assignment.role = assignment.role
 
     db.commit()
     db.refresh(db_assignment)

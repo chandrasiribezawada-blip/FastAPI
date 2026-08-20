@@ -20,9 +20,11 @@ def create_attendance_record(db: Session, attendance: AttendanceCreate):
 
     db_attendance = models.Attendance(
         student_id=attendance.student_id,
-        subject_id=attendance.subject_id,
+        offering_id=attendance.offering_id,
         attendance_date=attendance.attendance_date,
-        status=attendance.status,
+        period_session=attendance.period_session,
+        attendance_status=attendance.status,
+        faculty_id=attendance.faculty_id,
     )
 
     db.add(db_attendance)
@@ -44,9 +46,11 @@ def update_attendance_record(
         return None
 
     db_attendance.student_id = attendance.student_id
-    db_attendance.subject_id = attendance.subject_id
+    db_attendance.offering_id = attendance.offering_id
     db_attendance.attendance_date = attendance.attendance_date
-    db_attendance.status = attendance.status
+    db_attendance.period_session = attendance.period_session
+    db_attendance.attendance_status = attendance.status
+    db_attendance.faculty_id = attendance.faculty_id
 
     db.commit()
     db.refresh(db_attendance)

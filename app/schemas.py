@@ -1,5 +1,8 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import date
+
+
+PositiveId = Field(gt=0)
 
 
 # =========================
@@ -9,7 +12,7 @@ from datetime import date
 class DepartmentBase(BaseModel):
     department_code: str
     department_name: str
-    hod_faculty_id: int | None = None
+    hod_faculty_id: int | None = Field(default=None, gt=0)
     contact_email: str | None = None
     contact_mobile: str | None = None
 
@@ -19,7 +22,7 @@ class DepartmentCreate(DepartmentBase):
 
 
 class DepartmentResponse(DepartmentBase):
-    department_id: int
+    department_id: int = PositiveId
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -31,7 +34,7 @@ class DepartmentResponse(DepartmentBase):
 class ProgramBase(BaseModel):
     program_code: str
     program_name: str
-    department_id: int
+    department_id: int = PositiveId
 
 
 class ProgramCreate(ProgramBase):
@@ -49,10 +52,11 @@ class ProgramResponse(ProgramBase):
 # =========================
 
 class FacultyBase(BaseModel):
+    employee_id: str
     faculty_name: str
     email: str
     mobile: str | None = None
-    department_id: int
+    department_id: int = PositiveId
 
 
 class FacultyCreate(FacultyBase):
@@ -70,11 +74,13 @@ class FacultyResponse(FacultyBase):
 # =========================
 
 class StudentBase(BaseModel):
+    roll_number: str
     student_name: str
     email: str
     mobile: str | None = None
-    department_id: int
-    program_id: int
+    admission_year: int
+    department_id: int = PositiveId
+    program_id: int = PositiveId
 
 
 class StudentCreate(StudentBase):
@@ -95,7 +101,9 @@ class SubjectBase(BaseModel):
     subject_code: str
     subject_name: str
     credits: int
-    department_id: int
+    department_id: int = PositiveId
+    semester: int | None = None
+    subject_type: str | None = None
 
 
 class SubjectCreate(SubjectBase):
@@ -113,8 +121,8 @@ class SubjectResponse(SubjectBase):
 # =========================
 
 class RegistrationBase(BaseModel):
-    student_id: int
-    subject_id: int
+    student_id: int = PositiveId
+    offering_id: int = PositiveId
     registration_date: date
     status: str
 
@@ -134,10 +142,13 @@ class RegistrationResponse(RegistrationBase):
 # =========================
 
 class ExaminationResultBase(BaseModel):
-    student_id: int
-    subject_id: int
-    marks: int
+    student_id: int = PositiveId
+    offering_id: int = PositiveId
+    internal_marks: float | None = None
+    external_marks: float | None = None
+    total_marks: float | None = None
     grade: str | None = None
+    result_status: str | None = None
 
 
 class ExaminationResultCreate(ExaminationResultBase):
@@ -155,7 +166,7 @@ class ExaminationResultResponse(ExaminationResultBase):
 # =========================
 
 class StudentActivityBase(BaseModel):
-    student_id: int
+    student_id: int = PositiveId
     activity_name: str
     description: str | None = None
     activity_date: date | None = None
@@ -176,9 +187,11 @@ class StudentActivityResponse(StudentActivityBase):
 # =========================
 
 class AttendanceBase(BaseModel):
-    student_id: int
-    subject_id: int
+    student_id: int = PositiveId
+    offering_id: int = PositiveId
     attendance_date: date
+    period_session: int | None = None
+    faculty_id: int = PositiveId
     status: str
 
 
@@ -197,10 +210,9 @@ class AttendanceResponse(AttendanceBase):
 # =========================
 
 class FacultyAssignmentBase(BaseModel):
-    faculty_id: int
-    subject_id: int
-    semester: str
-    academic_year: str
+    faculty_id: int = PositiveId
+    offering_id: int = PositiveId
+    role: str | None = None
 
 
 class FacultyAssignmentCreate(FacultyAssignmentBase):
@@ -218,10 +230,11 @@ class FacultyAssignmentResponse(FacultyAssignmentBase):
 # =========================
 
 class CourseOfferingBase(BaseModel):
-    subject_id: int
-    faculty_id: int
-    semester: str
-    academic_year: str
+    subject_id: int = PositiveId
+    semester: int
+    academic_year: int
+    section: str | None = None
+    status: str | None = None
 
 
 class CourseOfferingCreate(CourseOfferingBase):

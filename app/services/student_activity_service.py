@@ -21,8 +21,8 @@ def create_student_activity(db: Session, activity: StudentActivityCreate):
     db_activity = models.StudentActivity(
         student_id=activity.student_id,
         activity_name=activity.activity_name,
-        description=activity.description,
-        activity_date=activity.activity_date,
+        achievement=activity.description,
+        participation_date=activity.activity_date,
     )
 
     db.add(db_activity)
@@ -45,8 +45,8 @@ def update_student_activity(
 
     db_activity.student_id = activity.student_id
     db_activity.activity_name = activity.activity_name
-    db_activity.description = activity.description
-    db_activity.activity_date = activity.activity_date
+    db_activity.achievement = activity.description
+    db_activity.participation_date = activity.activity_date
 
     db.commit()
     db.refresh(db_activity)
